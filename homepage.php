@@ -256,7 +256,7 @@ div.homepagenotified{
             <div class="homepagecontainer">              
                 <div class="bannerheader">
                     <h1>BSMS</h1>
-                    <p><h2>Book Shelf Management System</h2></p>
+                    <p><h2>Online Book Shelf Management System</h2></p>
                 </div>
                 <p class="bannertagline">
                     Read Books Online and live your world of Joy..
