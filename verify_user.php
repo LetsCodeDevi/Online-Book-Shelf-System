@@ -36,6 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             #echo "Login successful. Welcome, " . htmlspecialchars($user['Name']) . "!";
             #header("Location: homepage.html");
             $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $user['Username'];
             $response['status'] = 'success';
             $response['message'] = 'User Login Successfull';
             echo json_encode($response);

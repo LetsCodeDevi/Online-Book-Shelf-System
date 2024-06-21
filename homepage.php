@@ -4,6 +4,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     header("Location: openpage.php");
     exit;
 }
+$username = isset($_SESSION['username']) ? $_SESSION['username'] : 'Guest';
 
 header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1.
 header("Pragma: no-cache"); // HTTP 1.0.
@@ -164,7 +165,7 @@ div.homepagenotified{
                 <li><a class="dropdown-item" href="#">Reading Status</a></li>
             </ul>
         </li>
-        <li><a class="dropdown-item" href="#">Profile</a></li>
+        <li><a class="dropdown-item" href="#" id="profileBtn">Profile</a></li>
         <li><a class="dropdown-item" href="#" id="read_click">Read</a></li> <!-- Opens in same tab -->
         <li class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">My Library</a>
@@ -203,8 +204,99 @@ div.homepagenotified{
   </div>
 </div>
 
+<!-- Add this modal structure for the profile -->
+<div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileModalLabel">Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="profileName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="profileName" name="name" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileUsername" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="profileUsername" name="username" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="profileEmail" name="email" disabled>
+                        </div>
+                        <div class="mb-3">
+                            <label for="profilePhone" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="profilePhone" name="phone" disabled>
+                        </div>
+                        <button type="button" id="editProfileBtn" class="btn btn-primary">Edit</button>
+                        <button type="button" id="saveProfileBtn" class="btn btn-success" style="display:none;">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script>
+    <script>
+    $(document).ready(function() {
+        $("#profileBtn").on("click", function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: 'get_profile.php',
+                type: 'POST',
+                dataType: 'json',
+                success: function(response) {
+                    if (response) {
+                        $('#profileName').val(response.Name);
+                        $('#profileUsername').val(response.Username);
+                        $('#profileEmail').val(response.Email);
+                        $('#profilePhone').val(response.Contact);
+                        $('#profileModal').modal('show');
+                    } else {
+                        alert('Failed to fetch profile information.');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('An error occurred while fetching the profile.');
+                }
+            });
+        });
+
+        $("#editProfileBtn").on("click", function() {
+            $("#profileForm input").prop("disabled", false);
+            $(this).hide();
+            $("#saveProfileBtn").show();
+        });
+
+        $("#saveProfileBtn").on("click", function() {
+            var formData = $("#profileForm").serialize();
+            $.ajax({
+                url: 'update_profile.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert('Profile updated successfully!');
+                        $("#profileForm input").prop("disabled", true);
+                        $("#editProfileBtn").show();
+                        $("#saveProfileBtn").hide();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('An error occurred while updating the profile.');
+                }
+            });
+        });
+    });
+    </script>
+
+<script>   
     $(document).ready(function() {
         $("#add_book").on("click", function(e) {
             e.preventDefault();
@@ -256,6 +348,8 @@ div.homepagenotified{
             <div class="homepagecontainer">              
                 <div class="bannerheader">
                     <h1>BSMS</h1>
+                    <h3> Welcome <?php echo htmlspecialchars($username); ?></h3>
+                
                     <p><h2>Online Book Shelf Management System</h2></p>
                 </div>
                 <p class="bannertagline">
