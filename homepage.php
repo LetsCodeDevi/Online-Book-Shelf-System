@@ -161,7 +161,7 @@ div.homepagenotified{
         <li class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Settings</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Change Password</a></li>
+                <li><a class="dropdown-item" href="#" id="changePasswordBtn">Change Password</a></li>
                 <li><a class="dropdown-item" href="#">Reading Status</a></li>
             </ul>
         </li>
@@ -238,6 +238,36 @@ div.homepagenotified{
         </div>
     </div>
 
+    <!-- Change Password modal structure -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel">Change Password</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="changePasswordForm">
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmNewPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                        </div>
+                        <button type="button" id="changePasswordBtn" class="btn btn-success">Change Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
     $(document).ready(function() {
         $("#profileBtn").on("click", function(e) {
@@ -290,6 +320,35 @@ div.homepagenotified{
                 error: function(xhr, status, error) {
                     console.error(error);
                     alert('An error occurred while updating the profile.');
+                }
+            });
+        });
+
+        // Change Password Modal
+        $("#changePasswordBtn").on("click", function(e) {
+            e.preventDefault();
+            $("#changePasswordModal").modal('show');
+        });
+
+        $("#changePasswordForm #changePasswordBtn").on("click", function() {
+            var formData = $("#changePasswordForm").serialize();
+            $.ajax({
+                url: 'change_password.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        alert('Password changed successfully!');
+                        $("#changePasswordModal").modal('hide');
+                        $("#changePasswordForm")[0].reset();
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('An error occurred while changing the password.');
                 }
             });
         });
@@ -367,26 +426,26 @@ div.homepagenotified{
             <div class="homepagefeatures">
                 <div class="homepagefeature">
                     <span><i class="fa-solid fa-gear"></i></span>
-                    <h3>Editable theme</h3>
-                    <p>bdefjnejrgtjgnjrtngmrnfjeruthjnfjrnfbdefjnejr
-                        gtjgnjrtngmrnfjeruthjnfjrnfbdefjnejrgtjgnjrt
-                        ngmrnfjeruthjnfjrnf</p>
+                    <h3>Suggestions</h3>
+                    <p>Looking for great books to read? Dive into classics by Jane Austen or Charles Dickens for timeless tales, 
+                        or explore contemporary works by Haruki Murakami and Chimamanda Ngozi Adichie for fresh perspectives. 
+                        Whether you crave adventure, romance, or deep insights, there's a book out there ready to captivate your imagination.</p>
                 </div>
                 <div class="homepagefeature">
                     <span><i class="fa-solid fa-star"></i></span>
-                    <h3>Flat Design</h3>
-                    <p>blah blah blah blah blahb
-                        defjnejrgtjgnjrtngmrnfjeruthjn
-                        fjrnfbdefjnejrgtjgnjrtngmrnfjeru
-                        thjnfjrnf</p>
+                    <h3>Free Download</h3>
+                    <p>For downloading books in PDF format, Project Gutenberg offers over 60,000 free eBooks, including many classics. 
+                        Google Books and Open Library provide access to a vast collection of digitized books, ideal for academic and research 
+                        purposes. ManyBooks is great for a wide range of genres, while BookBoon offers free textbooks and business books. 
+                        </p>
                 </div>
                 <div class="homepagefeature">
                     <span><i class="fa-solid fa-globe"></i></span>
-                    <h3>Reach your Audience</h3>
-                    <p>lablalajebrj hedjenkdnbdefjnej
-                        rgtjgnjrtngmrnfjeruthjnfjrnfbdefjnejr
-                        gtjgnjrtngmrnfjeruthjnfjrnf bahbsuwhie
-                        nfbdefjnejrgtjgnjrtngmrnfjeruthjnfjrnf</p>
+                    <h3>Publish Your Books</h3>
+                    <p>There are several platforms where authors can publish their books independently and reach a global audience. 
+                        Amazon Kindle Direct Publishing (KDP) allows authors to self-publish eBooks and paperbacks easily, providing access 
+                        to millions of readers on Amazon. Smashwords offers distribution to major eBook retailers like Apple Books and Barnes & 
+                        Noble.  </p>
                 </div>
             </div>
             <div class="homepagenotified">
