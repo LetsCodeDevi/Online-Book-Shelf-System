@@ -161,7 +161,7 @@ div.homepagenotified{
         <li class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">Settings</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Add Profile</a></li>
+                <li><a class="dropdown-item" href="#">Change Password</a></li>
                 <li><a class="dropdown-item" href="#">Reading Status</a></li>
             </ul>
         </li>
@@ -348,7 +348,7 @@ div.homepagenotified{
             <div class="homepagecontainer">              
                 <div class="bannerheader">
                     <h1>BSMS</h1>
-                    <h3> Welcome <?php echo htmlspecialchars($username); ?></h3>
+                    <h3> Welcome <?php echo htmlspecialchars($name); ?></h3>
                 
                     <p><h2>Online Book Shelf Management System</h2></p>
                 </div>
