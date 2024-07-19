@@ -166,7 +166,7 @@ div.homepagenotified{
             </ul>
         </li>
         <li><a class="dropdown-item" href="#" id="profileBtn">Profile</a></li>
-        <li><a class="dropdown-item" href="#" id="read_click">Read</a></li> <!-- Opens in same tab -->
+        <li><a class="dropdown-item" href="#" id="read_click">Read Book</a></li> <!-- Opens in same tab -->
         <li class="dropdown-submenu">
             <a class="dropdown-item dropdown-toggle" href="#">My Library</a>
             <ul class="dropdown-menu">
